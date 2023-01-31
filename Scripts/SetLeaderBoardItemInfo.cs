@@ -8,9 +8,9 @@ public class SetLeaderBoardItemInfo : MonoBehaviour
     public SpriteRenderer spriteRenderer;
     public Sprite DriverSprite;
 
-    void Start()
+    private void Update()
     {
-        
+        SetDriverImage(DriverSprite);
     }
     public void SetDriverImage(Sprite newSprite)
     {

@@ -11,11 +11,36 @@ public class LeaderboardHandler : MonoBehaviour
 
     public GameObject[] leaderboardObjectPrefab;
     public Sprite[] leaderboardSprites;
+    public SpriteRenderer[] Players;
+    public Player_Character_controller humanPlayer;
 
     private void Start()
     {
-        characteristics = GameObject.Find("LevelDefine").GetComponent<LevelDefineCharacteristics>();
+        StartCoroutine(LateStart(1));
     }
+
+    IEnumerator LateStart(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        characteristics = GameObject.Find("LevelDefine").GetComponent<LevelDefineCharacteristics>();
+        humanPlayer = GameObject.Find("Player").GetComponent<Player_Character_controller>();
+        leaderboardSprites = new Sprite[4];
+        Players = new SpriteRenderer[4];
+        for (int i = 0; i < 4; i++)
+        {
+            Players[i] = GameObject.Find("AI Player_0" + i).GetComponent<SpriteRenderer>();
+            if (leaderboardSprites[i] == null)
+            {
+                leaderboardSprites[i] = humanPlayer.p_spriteRenderer.sprite;
+                break;
+            }
+            leaderboardSprites[i] = Players[i].sprite;
+            
+            
+        }
+
+    }
+
     SetLeaderBoardItemInfo[] setLeaderBoardItemInfo;
     private void Awake()
     {
@@ -24,7 +49,7 @@ public class LeaderboardHandler : MonoBehaviour
         characteristics = GameObject.Find("LevelDefine").GetComponent<LevelDefineCharacteristics>();
         VerticalLayoutGroup leaderboardLayoutGroup = GetComponentInChildren<VerticalLayoutGroup>();
 
-        setLeaderBoardItemInfo = new SetLeaderBoardItemInfo[characteristics.levelContestants - 1];
+        setLeaderBoardItemInfo = new SetLeaderBoardItemInfo[characteristics.levelContestants];
 
         for (int i = 0; i < 4; i++)
         {
