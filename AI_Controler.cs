@@ -7,6 +7,7 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class AI_Controler : Character_Controller
 {
+    private Rigidbody2D body;
     public int currentCheckpoint; //Current Checkpoint Number
     public int lapNumber = 1; //Current lap
     private Checkpoint_Controler checkpoint_Controler;
@@ -17,9 +18,14 @@ public class AI_Controler : Character_Controller
     // Start is called before the first frame update
     void Start()
     {
+        body = GetComponent<Rigidbody2D>();
         characteristics = GameObject.Find("LevelDefine").GetComponent<LevelDefineCharacteristics>();
         checkpoint_Controler = GameObject.Find("Checkpoint_" + (currentCheckpoint + 1)).GetComponent<Checkpoint_Controler>();
         transform.position = new Vector3(checkpoint_Controler.transform.position.x, checkpoint_Controler.transform.position.y, checkpoint_Controler.transform.position.z);
+        body.rotation = checkpoint_Controler.transform.eulerAngles.z;
+        
+        transform.localScale = new Vector3(checkpoint_Controler.transform.localScale.x, checkpoint_Controler.transform.localScale.y, checkpoint_Controler.transform.localScale.z);
+        
         AIPlayer = new int[characteristics.levelContestants];
     }
 
@@ -45,8 +51,31 @@ public class AI_Controler : Character_Controller
                     characteristics.levelPlayerLaps[i] += 1;
                     checkpoint_Controler = GameObject.Find("Checkpoint_" + (currentCheckpoint + 1)).GetComponent<Checkpoint_Controler>();
                 }
+
                 transform.position = new Vector3(checkpoint_Controler.transform.position.x, checkpoint_Controler.transform.position.y, checkpoint_Controler.transform.position.z);
+                body.rotation = checkpoint_Controler.transform.eulerAngles.z;
+                transform.localScale = new Vector3(checkpoint_Controler.transform.localScale.x, checkpoint_Controler.transform.localScale.y, checkpoint_Controler.transform.localScale.z);
+
+
             }
+            else if (collision.gameObject.tag == "Player" && gameObject.name == "Target_04")
+                {
+                if (GameObject.Find("Checkpoint_" + (currentCheckpoint + 1)) != null) //Checks if the next checkpoint exists. if not, reset the checkpoint counter and increment players laps 
+                {
+                    checkpoint_Controler = GameObject.Find("Checkpoint_" + (currentCheckpoint + 1)).GetComponent<Checkpoint_Controler>();
+                }
+                else
+                {
+                    currentCheckpoint = 0;
+                    characteristics.levelPlayerLaps[4] += 1;
+                    checkpoint_Controler = GameObject.Find("Checkpoint_" + (currentCheckpoint + 1)).GetComponent<Checkpoint_Controler>();
+                }
+
+                transform.position = new Vector3(checkpoint_Controler.transform.position.x, checkpoint_Controler.transform.position.y, checkpoint_Controler.transform.position.z);
+                body.rotation = checkpoint_Controler.transform.eulerAngles.z;
+                transform.localScale = new Vector3(checkpoint_Controler.transform.localScale.x, checkpoint_Controler.transform.localScale.y, checkpoint_Controler.transform.localScale.z);
+            }
+
         }
     }
 }

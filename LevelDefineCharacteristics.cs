@@ -64,18 +64,21 @@ public class LevelDefineCharacteristics : MonoBehaviour
 
         for (int i = 0; i < levelContestants; i++)
         {
+            AIPath[i] = GameObject.Find("AI Player_0" + i).GetComponent<AIPath>();
             if (GameObject.Find("AI Player_0" + i).GetComponent<AIPath>() == null)
             {
                 currentCheckpoint[i] = player_Character_Controller.currentCheckpoint;
                 levelPlayerLaps[i] = player_Character_Controller.lapNumber;
                 
             }
+            else
+            {
+                
+                AI_Controlers[i] = GameObject.Find("Target_0" + i).GetComponent<AI_Controler>();
+                currentCheckpoint[i] = AI_Controlers[i].currentCheckpoint;
+                Checkpoint_Controlers[i] = GameObject.Find("Checkpoint_" + (AI_Controlers[i].currentCheckpoint + 1)).GetComponent<Checkpoint_Controler>();
+            }
 
-            AIPath[i] = GameObject.Find("AI Player_0" + i).GetComponent<AIPath>();
-            AI_Controlers[i] = GameObject.Find("Target_0" + i).GetComponent<AI_Controler>();
-            currentCheckpoint[i] = AI_Controlers[i].currentCheckpoint;
-            Checkpoint_Controlers[i] = GameObject.Find("Checkpoint_" + (AI_Controlers[i].currentCheckpoint+1)).GetComponent<Checkpoint_Controler>();
-            levelPlayerLaps[i] = 1;
             
         }
 
@@ -88,7 +91,7 @@ public class LevelDefineCharacteristics : MonoBehaviour
     {
         LevelTimeSetter();
         userPosition();
-
+        UpdateData(); 
 
 
         //UI and Level Setter
@@ -108,7 +111,7 @@ public class LevelDefineCharacteristics : MonoBehaviour
         {
             player_Character_Controller.currentCheckpoint = 0;
             player_Character_Controller.lapNumber += 1;
-            levelPlayerLaps[levelContestants-1] = player_Character_Controller.lapNumber;
+            levelPlayerLaps[levelContestants] = player_Character_Controller.lapNumber;
         }
 
     }
@@ -151,18 +154,29 @@ public class LevelDefineCharacteristics : MonoBehaviour
         {
             Vector3 playerPosition;
             Vector3 nextCheckpointPosition;
-            int checkpoint = currentCheckpoint[i] - 1;
-            if (i != levelContestants)
+            int checkpoint = currentCheckpoint[i];
+            if (i != levelContestants-1)
             {
+                Debug.Log("WEEE WOOOO...");
                 nextCheckpointPosition = new Vector3(AI_Controlers[i].transform.position.x, AI_Controlers[i].transform.position.y, AI_Controlers[i].transform.position.z);
                 playerPosition = new Vector3(AIPath[i].transform.position.x, AIPath[i].transform.position.y, AIPath[i].transform.position.z);
+                
             }
             else
             {
                 Debug.Log("Boowamp...");
                 playerPosition = new Vector3(player_Character_Controller.transform.position.x, player_Character_Controller.transform.position.y, player_Character_Controller.transform.position.z);
-                nextCheckpointPosition = new Vector3(Checkpoint_Controlers[player_Character_Controller.currentCheckpoint + 1].transform.position.x, Checkpoint_Controlers[player_Character_Controller.currentCheckpoint + 1].transform.position.y, Checkpoint_Controlers[player_Character_Controller.currentCheckpoint + 1].transform.position.z);
+                if (player_Character_Controller.currentCheckpoint > Checkpoint_Controlers.Length)
+                {
+                    nextCheckpointPosition = new Vector3(Checkpoint_Controlers[0].transform.position.x, Checkpoint_Controlers[0].transform.position.y, Checkpoint_Controlers[0].transform.position.z);
+                }
+                else
+                {
+                    nextCheckpointPosition = new Vector3(Checkpoint_Controlers[player_Character_Controller.currentCheckpoint + 1].transform.position.x, Checkpoint_Controlers[player_Character_Controller.currentCheckpoint + 1].transform.position.y, Checkpoint_Controlers[player_Character_Controller.currentCheckpoint + 1].transform.position.z);
+                }
 
+                
+             
             }
 
             float AbsDistance = Vector3.Distance(nextCheckpointPosition, playerPosition);
@@ -245,5 +259,19 @@ public class LevelDefineCharacteristics : MonoBehaviour
         
 
     }
-    
+    void UpdateData()
+    {
+        for(int i = 0; i < levelContestants; i++)
+        {
+            if (AI_Controlers[i] != null)
+            {
+                currentCheckpoint[i] = AI_Controlers[i].currentCheckpoint;
+            }
+            else
+            {
+                currentCheckpoint[i] = player_Character_Controller.currentCheckpoint;
+            }
+            
+        }
+    }
 }

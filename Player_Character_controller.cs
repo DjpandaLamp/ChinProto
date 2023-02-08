@@ -25,6 +25,7 @@ public class Player_Character_controller : Character_Controller
     States previousFrameState; //Helps with Transitions between states
     public LevelDefineCharacteristics LevelDefineCharacteristics; //Allows for interaction with the level data
     private Checkpoint_Controler checkpoint_Controler; //Allows for interaction with checkpoint data
+    private AI_Controler target;
     private CameraFollow cameraFollow;
     private MasterBarScript masterBar;
     public AIPath AIPath;
@@ -69,7 +70,7 @@ public class Player_Character_controller : Character_Controller
         LevelDefineCharacteristics = GameObject.Find("LevelDefine").GetComponent<LevelDefineCharacteristics>();
         cameraFollow = GameObject.Find("Main Camera").GetComponent<CameraFollow>();
         masterBar = GameObject.Find("HelathBar").GetComponent<MasterBarScript>();
-
+        target = GameObject.Find("Target_04").GetComponent<AI_Controler>();
         this.p_animator = GetComponent<Animator>();
         this.rb = GetComponent<Rigidbody2D>();
     }
@@ -81,18 +82,6 @@ public class Player_Character_controller : Character_Controller
         {
             collision.gameObject.SetActive(false);
             Money++;
-            print("I am now richer. I have " + Money + "money.");
-            Debug.Log("You Have Collided with Object");
-           
-        }
-        if (collision.gameObject.tag == "checkpoint")
-        {
-            checkpoint_Controler = collision.gameObject.GetComponent<Checkpoint_Controler>();
-           if (currentCheckpoint == checkpoint_Controler.CheckpointNumber - 1)
-            {
-                currentCheckpoint = checkpoint_Controler.CheckpointNumber;
-            }
-            
         }
     }
 
@@ -104,15 +93,11 @@ public class Player_Character_controller : Character_Controller
             dash = true;
         }
     }
-    private void OnGUI()
-    {
-        GUI.Box(new Rect(cameraFollow.selfTrans.position.x + 50, cameraFollow.selfTrans.position.y + 350, (DashMult-0.8f)* 40, 70), "Dash Cooldown");
-        GUI.Box(new Rect(cameraFollow.selfTrans.position.x + 50, cameraFollow.selfTrans.position.y + 450, 160, 70), Mathf.Round(LevelDefineCharacteristics.levelPlayerTime[LevelDefineCharacteristics.levelPlayerTime.Length-1]).ToString());
-    }
 
     //Updates game at fixed intervels 
     private void FixedUpdate()
     {
+        currentCheckpoint = target.currentCheckpoint;
         previousFrameState = state;
         if (canControl == true)
         {
