@@ -29,7 +29,7 @@ public class LevelDefineCharacteristics : MonoBehaviour
     //public string[] sortedPosition;
     public int[] indices; 
     private Path[] ap;
-    private AIPath[] AIPath;
+    public AIPath[] AIPath;
     [SerializeField]
     private AI_Controler[] AI_Controlers;
     private Checkpoint_Controler[] Checkpoint_Controlers;
@@ -53,10 +53,10 @@ public class LevelDefineCharacteristics : MonoBehaviour
         currentCheckpoint = new int[levelContestants];
         //sortedPosition = new string[levelContestants];
         indices = new int[levelContestants];
-        
+
         AI_Controlers = new AI_Controler[levelContestants];
         Checkpoint_Controlers = new Checkpoint_Controler[levelContestants];
-        
+
 
         player_Character_Controller = GameObject.Find("Player").GetComponent<Player_Character_controller>();
         m_camera = GameObject.Find("Main Camera").GetComponent<CameraFollow>();
@@ -64,30 +64,28 @@ public class LevelDefineCharacteristics : MonoBehaviour
 
         for (int i = 0; i < levelContestants; i++)
         {
-            AIPath[i] = GameObject.Find("AI Player_0" + i).GetComponent<AIPath>();
-            if (GameObject.Find("AI Player_0" + i).GetComponent<AIPath>() == null)
+            AIPath[0] = GameObject.Find("AI Player_00").GetComponent<AIPath>();
+            AIPath[1] = GameObject.Find("AI Player_01").GetComponent<AIPath>();
+            AIPath[2] = GameObject.Find("AI Player_02").GetComponent<AIPath>();
+            AIPath[3] = GameObject.Find("AI Player_03").GetComponent<AIPath>();
+            if (GameObject.Find("AI Player_04").GetComponent<AIPath>() == null && i == 4)
             {
                 currentCheckpoint[i] = player_Character_Controller.currentCheckpoint;
                 levelPlayerLaps[i] = player_Character_Controller.lapNumber;
-                
+
             }
             else
             {
-                
+
                 AI_Controlers[i] = GameObject.Find("Target_0" + i).GetComponent<AI_Controler>();
                 currentCheckpoint[i] = AI_Controlers[i].currentCheckpoint;
                 Checkpoint_Controlers[i] = GameObject.Find("Checkpoint_" + (AI_Controlers[i].currentCheckpoint + 1)).GetComponent<Checkpoint_Controler>();
             }
-
-            
         }
-
-        
-        
     }
 
-    // Update is called once per frame
-    void Update()
+        // Update is called once per frame
+        void Update()
     {
         LevelTimeSetter();
         userPosition();
@@ -166,7 +164,7 @@ public class LevelDefineCharacteristics : MonoBehaviour
             {
                 Debug.Log("Boowamp...");
                 playerPosition = new Vector3(player_Character_Controller.transform.position.x, player_Character_Controller.transform.position.y, player_Character_Controller.transform.position.z);
-                if (player_Character_Controller.currentCheckpoint > Checkpoint_Controlers.Length)
+                if (player_Character_Controller.currentCheckpoint+1 > Checkpoint_Controlers.Length)
                 {
                     nextCheckpointPosition = new Vector3(Checkpoint_Controlers[0].transform.position.x, Checkpoint_Controlers[0].transform.position.y, Checkpoint_Controlers[0].transform.position.z);
                 }
@@ -180,7 +178,7 @@ public class LevelDefineCharacteristics : MonoBehaviour
             }
 
             float AbsDistance = Vector3.Distance(nextCheckpointPosition, playerPosition);
-            AbsDistance = Mathf.Abs(AbsDistance);
+           
             AbsDistance = AbsDistance-(1000*checkpoint)-(100000 * (levelPlayerLaps[i]-1)) + levelLapsCount*100000+levelCheckpointRollover*1000;
             currentPosition[i] = AbsDistance;
             

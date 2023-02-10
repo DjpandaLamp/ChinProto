@@ -51,13 +51,14 @@ public class LeaderboardHandler : MonoBehaviour
 
         setLeaderBoardItemInfo = new SetLeaderBoardItemInfo[characteristics.levelContestants];
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < characteristics.levelContestants; i++)
         {
             GameObject leaderboardInfoGameobject = Instantiate(leaderboardObjectPrefab[i], leaderboardLayoutGroup.transform);
 
             setLeaderBoardItemInfo[i] = leaderboardInfoGameobject.GetComponent<SetLeaderBoardItemInfo>();
             // Sprite driveSprite = characteristics.
             // setLeaderBoardItemInfo[i].SetDriverImage();
+            UpdateSprites();
         }
     }
 
@@ -71,6 +72,7 @@ public class LeaderboardHandler : MonoBehaviour
         {
 
             setLeaderBoardItemInfo[i].SetDriverImage(leaderboardSprites[characteristics.indices[i]]);
+            
         }
     }
 
