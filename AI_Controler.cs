@@ -11,7 +11,7 @@ public class AI_Controler : Character_Controller
     public int currentCheckpoint; //Current Checkpoint Number
     public int lapNumber = 1; //Current lap
     private Checkpoint_Controler checkpoint_Controler;
-    private LevelDefineCharacteristics characteristics;
+    private LevelDefine define;
     public int[] AIPlayer;
 
 
@@ -19,14 +19,14 @@ public class AI_Controler : Character_Controller
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
-        characteristics = GameObject.Find("LevelDefine").GetComponent<LevelDefineCharacteristics>();
+        define = GameObject.Find("LevelDefine").GetComponent<LevelDefine>();
         checkpoint_Controler = GameObject.Find("Checkpoint_" + (currentCheckpoint + 1)).GetComponent<Checkpoint_Controler>();
         transform.position = new Vector3(checkpoint_Controler.transform.position.x, checkpoint_Controler.transform.position.y, checkpoint_Controler.transform.position.z);
         body.rotation = checkpoint_Controler.transform.eulerAngles.z;
         
         transform.localScale = new Vector3(checkpoint_Controler.transform.localScale.x, checkpoint_Controler.transform.localScale.y, checkpoint_Controler.transform.localScale.z);
         
-        AIPlayer = new int[characteristics.levelContestants];
+        AIPlayer = new int[define.levelContestants];
     }
 
     void OnTriggerStay2D(Collider2D collision)
@@ -48,7 +48,7 @@ public class AI_Controler : Character_Controller
                 else
                 {
                     currentCheckpoint = 0;
-                    characteristics.levelPlayerLaps[i] += 1;
+                    define.levelPlayerLaps[i] += 1;
                     checkpoint_Controler = GameObject.Find("Checkpoint_" + (currentCheckpoint + 1)).GetComponent<Checkpoint_Controler>();
                 }
 
@@ -67,7 +67,7 @@ public class AI_Controler : Character_Controller
                 else
                 {
                     currentCheckpoint = 0;
-                    characteristics.levelPlayerLaps[4] += 1;
+                    define.levelPlayerLaps[4] += 1;
                     checkpoint_Controler = GameObject.Find("Checkpoint_" + (currentCheckpoint + 1)).GetComponent<Checkpoint_Controler>();
                 }
 

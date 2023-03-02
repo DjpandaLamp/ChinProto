@@ -1,26 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
-using Pathfinding.Ionic.Zip;
 using UnityEngine;
 
 public class StartLine : MonoBehaviour
 {
-    private LevelDefine define;
+    [SerializeField] private LevelDefine levelDefine;
     public string s1;
     public string s2;
-    public int gameNum;
+    public int i1;
+  
+
     // Start is called before the first frame update
     void Start()
     {
-        define = GameObject.FindGameObjectWithTag("leveldefine").GetComponent<LevelDefine>();
-        s1 = this.gameObject.name;
+        s1 = gameObject.name;
         s2 = s1.Substring(s1.Length - 1);
-        gameNum = int.Parse(s2);
+        i1 = int.Parse(s2);
+        
+       
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        levelDefine.startLine[i1] = this;
     }
 }

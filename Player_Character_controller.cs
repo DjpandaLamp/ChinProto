@@ -23,7 +23,7 @@ public class Player_Character_controller : Character_Controller
     States state; //allows interaction with the enum States
     [SerializeField]
     States previousFrameState; //Helps with Transitions between states
-    public LevelDefineCharacteristics LevelDefineCharacteristics; //Allows for interaction with the level data
+    public LevelDefine LevelDefineCharacteristics; //Allows for interaction with the level data
     private Checkpoint_Controler checkpoint_Controler; //Allows for interaction with checkpoint data
     private AI_Controler target;
     private CameraFollow cameraFollow;
@@ -67,7 +67,7 @@ public class Player_Character_controller : Character_Controller
     {
         
         state = States.idle;
-        LevelDefineCharacteristics = GameObject.Find("LevelDefine").GetComponent<LevelDefineCharacteristics>();
+        LevelDefineCharacteristics = GameObject.Find("LevelDefine").GetComponent<LevelDefine>();
         cameraFollow = GameObject.Find("Main Camera").GetComponent<CameraFollow>();
         masterBar = GameObject.Find("HelathBar").GetComponent<MasterBarScript>();
         target = GameObject.Find("Target_04").GetComponent<AI_Controler>();

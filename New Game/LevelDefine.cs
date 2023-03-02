@@ -31,12 +31,12 @@ public class LevelDefine : MonoBehaviour
     public GameObject cameraPrefab;
     public GameObject pauseShadePrefab;
 
-    private GameObject[] aIPlayers;
-    private GameObject[] aITargets;
+    public GameObject[] aIPlayers;
+    public GameObject[] aITargets;
     private GameObject player;
     private GameObject cameraMain;
     private GameObject pauseMain;
-    private StartLine[] startLine;
+    public StartLine[] startLine;
 
     private PauseShade pauseShade;
     private Checkpoint_Controler[] checkControl;
@@ -46,14 +46,14 @@ public class LevelDefine : MonoBehaviour
     private AIDestinationSetter[] aIDest;
     private AI_Controler[] aITargetScript;
 
-    public int count;
-    
+    public int count = 5;
+
     // Start is called before the first frame update
     void Start()
     {
         pauseMain = Instantiate<GameObject>(pauseShadePrefab);
         pauseShade = pauseMain.GetComponent<PauseShade>();
-        
+
         indices = new int[levelContestants];
         currentCheckpoint = new int[levelContestants];
         levelPlayerLaps = new int[levelContestants];
@@ -63,18 +63,27 @@ public class LevelDefine : MonoBehaviour
         levelPlayerTime = new float[levelContestants];
         distanceToNextCheckpoint = new float[levelContestants];
         currentPosition = new float[levelContestants];
-        
-        
-        
 
 
+
+
+        aITargetScript = new AI_Controler[count];
+        startLine = new StartLine[count];
         aIPlayers = new GameObject[count-1];
         aIPath = new AIPath[count];
         aIDest = new AIDestinationSetter[count];
         aITargets = new GameObject[count];
+
+        StartCoroutine(LateStart(0.1f));
+    }
+    IEnumerator LateStart(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
         for (int i=0;i<count;i++)
         {
             aITargets[i] = Instantiate<GameObject>(AITargetPrefab);
+            aITargets[i].name = "Target_0" + i;
+            
             aITargetScript[i] = aITargets[i].GetComponent<AI_Controler>();
             if (aIPlayers.Length >= i)
             {

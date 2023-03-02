@@ -8,7 +8,7 @@ public class ButtonManager : MonoBehaviour
 {
     public string gameStartScreen;
     public string mainMenuScreen;
-    private LevelDefineCharacteristics characteristics;
+    private LevelDefine characteristics;
     private CanvasGroup canvas;
     private PauseShade PauseShade;
     public float localTrans;
@@ -24,7 +24,7 @@ public class ButtonManager : MonoBehaviour
             PauseShade = GameObject.Find("PauseShade").GetComponent<PauseShade>();
             canvas.alpha = 0;
         }
-        characteristics = GameObject.Find("LevelDefine").GetComponent<LevelDefineCharacteristics>();
+        characteristics = GameObject.Find("LevelDefine").GetComponent<LevelDefine>();
 
     }
 

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class LeaderboardHandler : MonoBehaviour
 {
-    private LevelDefineCharacteristics characteristics;
+    private LevelDefine characteristics;
 
     public GameObject[] leaderboardObjectPrefab;
     public Sprite[] leaderboardSprites;
@@ -22,7 +22,7 @@ public class LeaderboardHandler : MonoBehaviour
     IEnumerator LateStart(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-        characteristics = GameObject.Find("LevelDefine").GetComponent<LevelDefineCharacteristics>();
+        characteristics = GameObject.Find("LevelDefine").GetComponent<LevelDefine>();
         humanPlayer = GameObject.Find("Player").GetComponent<Player_Character_controller>();
         leaderboardSprites = new Sprite[4];
         Players = new SpriteRenderer[4];
@@ -46,7 +46,7 @@ public class LeaderboardHandler : MonoBehaviour
     {
 
 
-        characteristics = GameObject.Find("LevelDefine").GetComponent<LevelDefineCharacteristics>();
+        characteristics = GameObject.Find("LevelDefine").GetComponent<LevelDefine>();
         VerticalLayoutGroup leaderboardLayoutGroup = GetComponentInChildren<VerticalLayoutGroup>();
 
         setLeaderBoardItemInfo = new SetLeaderBoardItemInfo[characteristics.levelContestants];

@@ -5,12 +5,12 @@ using UnityEngine;
 public class AnimationSpeed : MonoBehaviour
 {
     private Animator m_Animator;
-    private LevelDefineCharacteristics characteristics;
+    private LevelDefine characteristics;
 
     private void Start()
     {
         m_Animator = this.GetComponent<Animator>();
-        characteristics = GameObject.Find("LevelDefine").GetComponent<LevelDefineCharacteristics>();
+        characteristics = GameObject.Find("LevelDefine").GetComponent<LevelDefine>();
     }
     void Update()
     {
