@@ -44,7 +44,7 @@ public class LevelDefine : MonoBehaviour
     private CameraFollow cameraScript;
     private AIPath[] aIPath;
     private AIDestinationSetter[] aIDest;
-    private AI_Controler[] aITargetScript;
+    public AI_Controler[] aITargetScript;
 
     public int count = 5;
 
@@ -81,30 +81,31 @@ public class LevelDefine : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
         for (int i=0;i<count;i++)
         {
-            aITargets[i] = Instantiate<GameObject>(AITargetPrefab);
+            aITargets[i] = Instantiate<GameObject>(AITargetPrefab, GameObject.Find("Targets").transform);
             aITargets[i].name = "Target_0" + i;
-            
             aITargetScript[i] = aITargets[i].GetComponent<AI_Controler>();
-            if (aIPlayers.Length >= i)
+            if (aIPlayers.Length > i)
             {
-                aIPlayers[i] = Instantiate<GameObject>(AIPlayerPrefab);
+                aIPlayers[i] = Instantiate<GameObject>(AIPlayerPrefab, GameObject.Find("Players").transform);
+                aIPlayers[i].name = "AI Player_0" + i;
                 aIPlayers[i].transform.position = startLine[i].transform.position;
                 aIPlayers[i].transform.Rotate(0, 0, startLine[i].transform.eulerAngles.z);
                 
                 aIPath[i] = aIPlayers[i].GetComponent<AIPath>();
                 aIDest[i] = aIPlayers[i].GetComponent<AIDestinationSetter>();
                 aIDest[i].target = aITargets[i].transform;
+                
             }
             else
             {
-                player = Instantiate<GameObject>(playerPrefab);
+                player = Instantiate<GameObject>(playerPrefab, GameObject.Find("Players").transform);
                 cameraMain = Instantiate<GameObject>(cameraPrefab);
+                cameraMain.AddComponent<CameraFollow>();
                 playerScript = player.GetComponent<Player_Character_controller>();
                 cameraScript = cameraMain.GetComponent<CameraFollow>();
                 player.transform.position = startLine[i].transform.position;
                 player.transform.Rotate(0, 0, startLine[i].transform.eulerAngles.z);
-                cameraScript.Target = player.transform;
-                
+                cameraScript.Target = player.transform; 
             }
         }
     }
@@ -117,9 +118,9 @@ public class LevelDefine : MonoBehaviour
 
     void SetLapPlayer()
     {
-        if (playerScript.currentCheckpoint > levelCheckpointRollover)
+        if (playerScript.currentCheckpointSelf > levelCheckpointRollover)
         {
-            playerScript.currentCheckpoint = 0;
+            playerScript.currentCheckpointSelf = 0;
             playerScript.lapNumber += 1;
             levelPlayerLaps[levelContestants] = playerScript.lapNumber;
         }
@@ -175,13 +176,13 @@ public class LevelDefine : MonoBehaviour
             {
                 Debug.Log("Boowamp...");
                 playerPosition = new Vector3(playerScript.transform.position.x, playerScript.transform.position.y, playerScript.transform.position.z);
-                if (playerScript.currentCheckpoint + 1 > checkControl.Length)
+                if (playerScript.currentCheckpointSelf + 1 > checkControl.Length)
                 {
                     nextCheckpointPosition = new Vector3(checkControl[0].transform.position.x, aITargets[0].transform.position.y, aITargets[0].transform.position.z);
                 }
                 else
                 {
-                    nextCheckpointPosition = new Vector3(checkControl[playerScript.currentCheckpoint + 1].transform.position.x, checkControl[playerScript.currentCheckpoint + 1].transform.position.y, checkControl[playerScript.currentCheckpoint + 1].transform.position.z);
+                    nextCheckpointPosition = new Vector3(checkControl[playerScript.currentCheckpointSelf + 1].transform.position.x, checkControl[playerScript.currentCheckpointSelf + 1].transform.position.y, checkControl[playerScript.currentCheckpointSelf + 1].transform.position.z);
                 }
 
 
@@ -275,7 +276,7 @@ public class LevelDefine : MonoBehaviour
             }
             else
             {
-                currentCheckpoint[i] = playerScript.currentCheckpoint;
+                currentCheckpoint[i] = playerScript.currentCheckpointSelf;
             }
         }
     }

@@ -5,8 +5,24 @@ using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
-public class AI_Controler : Character_Controller
+public class AI_Controler : MonoBehaviour
 {
+    enum Items
+    {
+        NitroFuel,
+        RoadSpike,
+        FlameBall
+    }
+
+
+    public Rigidbody2D rb;
+    public float xDirection;
+    public float yDirection;
+    public Vector3 velocity;
+    public float maxSpeed;
+    public float acceleration = 3;
+    public float steerMag = 3;
+
     private Rigidbody2D body;
     public int currentCheckpoint; //Current Checkpoint Number
     public int lapNumber = 1; //Current lap

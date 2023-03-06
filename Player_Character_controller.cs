@@ -10,7 +10,7 @@ using Pathfinding;
 using UnityEditor;
 using System.Linq;
 
-public class Player_Character_controller : Character_Controller
+public class Player_Character_controller : LevelDefine
 {
     enum States //defines states
     {
@@ -19,6 +19,23 @@ public class Player_Character_controller : Character_Controller
         dash,
         useItem
     }
+
+    enum Items
+    {
+        NitroFuel,
+        RoadSpike,
+        FlameBall
+    }
+
+
+    public Rigidbody2D rb;
+    public float xDirection;
+    public float yDirection;
+    public Vector3 velocity;
+    public float maxSpeed;
+    public float acceleration = 3;
+    public float steerMag = 3;
+
     [SerializeField]
     States state; //allows interaction with the enum States
     [SerializeField]
@@ -43,9 +60,10 @@ public class Player_Character_controller : Character_Controller
     public float DashTime; //Amount of time left in a dash
     public float dashCooldown = 1; //Cooldown of a dash 
     public string heldItem; //Currently Held Item
-    public int currentCheckpoint; //Current Checkpoint Number
+    public int currentCheckpointSelf; //Current Checkpoint Number for the player
     public int lapNumber = 1; //Current lap
 
+    public AI_Controler currentTarget;
     public float playerSpeed;
     public float invTime;
     public bool isInvincible;
@@ -67,16 +85,27 @@ public class Player_Character_controller : Character_Controller
     {
         
         state = States.idle;
-        LevelDefineCharacteristics = GameObject.Find("LevelDefine").GetComponent<LevelDefine>();
-        cameraFollow = GameObject.Find("Main Camera").GetComponent<CameraFollow>();
-        masterBar = GameObject.Find("HelathBar").GetComponent<MasterBarScript>();
-        target = GameObject.Find("Target_04").GetComponent<AI_Controler>();
-        this.p_animator = GetComponent<Animator>();
-        this.rb = GetComponent<Rigidbody2D>();
+        StartCoroutine(LateStart(0.2f));
     }
 
-    //Detects Colisions with Collider2D
-    void OnTriggerStay2D(Collider2D collision)
+    IEnumerator LateStart(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        state = States.idle;
+        masterBar = GameObject.Find("HelathBar").GetComponent<MasterBarScript>();
+        currentTarget = GameObject.Find("Target_04").GetComponent<AI_Controler>();
+        this.p_animator = GetComponent<Animator>();
+        this.rb = GetComponent<Rigidbody2D>();
+        
+
+
+
+
+
+    }
+        //Detects Colisions with Collider2D
+        void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "money")
         {
@@ -97,7 +126,6 @@ public class Player_Character_controller : Character_Controller
     //Updates game at fixed intervels 
     private void FixedUpdate()
     {
-        currentCheckpoint = target.currentCheckpoint;
         previousFrameState = state;
         if (canControl == true)
         {
@@ -210,7 +238,7 @@ public class Player_Character_controller : Character_Controller
             //Calc speed from input
             velocity = transform.up * (yDirection * acceleration * moveMult * playerSpeed);
             rb.AddForce(velocity);
-            masterBar.setSlider(yDirection*DashShow);
+//            masterBar.setSlider(yDirection*DashShow);
 
         //rotate player
         float direction = Vector3.Dot(rb.velocity, rb.GetRelativeVector(Vector3.up));

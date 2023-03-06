@@ -23,7 +23,7 @@ public class LeaderboardHandler : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
         characteristics = GameObject.Find("LevelDefine").GetComponent<LevelDefine>();
-        humanPlayer = GameObject.Find("Player").GetComponent<Player_Character_controller>();
+        humanPlayer = null;
         leaderboardSprites = new Sprite[4];
         Players = new SpriteRenderer[4];
         for (int i = 0; i < 4; i++)
