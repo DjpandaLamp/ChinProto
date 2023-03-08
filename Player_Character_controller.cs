@@ -10,7 +10,7 @@ using Pathfinding;
 using UnityEditor;
 using System.Linq;
 
-public class Player_Character_controller : LevelDefine
+public class Player_Character_controller : MonoBehaviour
 {
     enum States //defines states
     {
@@ -64,7 +64,7 @@ public class Player_Character_controller : LevelDefine
     public int lapNumber = 1; //Current lap
 
     public AI_Controler currentTarget;
-    public float playerSpeed;
+    public float playerSpeed = 1;
     public float invTime;
     public bool isInvincible;
     public bool canControl = true;
@@ -79,7 +79,8 @@ public class Player_Character_controller : LevelDefine
     public bool useItem;
 
     public int clearTimer;
-
+    public int test;
+    public int currentLayer;
     // Start is called before the first frame update
     void Start()
     {
@@ -93,9 +94,10 @@ public class Player_Character_controller : LevelDefine
         yield return new WaitForSeconds(waitTime);
 
         state = States.idle;
-        masterBar = GameObject.Find("HelathBar").GetComponent<MasterBarScript>();
+//        masterBar = GameObject.Find("HelathBar").GetComponent<MasterBarScript>();
         currentTarget = GameObject.Find("Target_04").GetComponent<AI_Controler>();
         this.p_animator = GetComponent<Animator>();
+        
         this.rb = GetComponent<Rigidbody2D>();
         
 
@@ -265,7 +267,7 @@ public class Player_Character_controller : LevelDefine
             }
             currentSpeed = rb.velocity.magnitude;
             rb.velocity = rb.velocity * 0.95f * Time.deltaTime;
-     
+        test -= 1;
     }
 
 

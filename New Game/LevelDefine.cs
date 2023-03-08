@@ -99,6 +99,7 @@ public class LevelDefine : MonoBehaviour
             else
             {
                 player = Instantiate<GameObject>(playerPrefab, GameObject.Find("Players").transform);
+                player.name = "Player";
                 cameraMain = Instantiate<GameObject>(cameraPrefab);
                 cameraMain.AddComponent<CameraFollow>();
                 playerScript = player.GetComponent<Player_Character_controller>();
@@ -113,7 +114,7 @@ public class LevelDefine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        PauseGame();
     }
 
     void SetLapPlayer()
