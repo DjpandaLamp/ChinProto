@@ -54,15 +54,15 @@ public class LevelDefine : MonoBehaviour
         pauseMain = Instantiate<GameObject>(pauseShadePrefab);
         pauseShade = pauseMain.GetComponent<PauseShade>();
 
-        indices = new int[levelContestants];
-        currentCheckpoint = new int[levelContestants];
-        levelPlayerLaps = new int[levelContestants];
+        indices = new int[count];
+        currentCheckpoint = new int[count];
+        levelPlayerLaps = new int[count];
 
-        levelPlayerComplete = new bool[levelContestants];
+        levelPlayerComplete = new bool[count];
 
-        levelPlayerTime = new float[levelContestants];
-        distanceToNextCheckpoint = new float[levelContestants];
-        currentPosition = new float[levelContestants];
+        levelPlayerTime = new float[count];
+        distanceToNextCheckpoint = new float[count];
+        currentPosition = new float[count];
 
 
 
@@ -88,6 +88,7 @@ public class LevelDefine : MonoBehaviour
             {
                 aIPlayers[i] = Instantiate<GameObject>(AIPlayerPrefab, GameObject.Find("Players").transform);
                 aIPlayers[i].name = "AI Player_0" + i;
+                aIPlayers[i].tag = "AIPlayer" + i;
                 aIPlayers[i].transform.position = startLine[i].transform.position;
                 aIPlayers[i].transform.Rotate(0, 0, startLine[i].transform.eulerAngles.z);
                 
@@ -100,6 +101,7 @@ public class LevelDefine : MonoBehaviour
             {
                 player = Instantiate<GameObject>(playerPrefab, GameObject.Find("Players").transform);
                 player.name = "Player";
+                player.tag = "Player";
                 cameraMain = Instantiate<GameObject>(cameraPrefab);
                 cameraMain.AddComponent<CameraFollow>();
                 playerScript = player.GetComponent<Player_Character_controller>();

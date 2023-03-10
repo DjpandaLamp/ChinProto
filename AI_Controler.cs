@@ -36,33 +36,43 @@ public class AI_Controler : MonoBehaviour
     {
         body = GetComponent<Rigidbody2D>();
         define = GameObject.Find("LevelDefine").GetComponent<LevelDefine>();
-        checkpoint_Controler = GameObject.Find("Checkpoint_" + (currentCheckpoint + 1)).GetComponent<Checkpoint_Controler>();
+        checkpoint_Controler = GameObject.Find("Checkpoint_1").GetComponent<Checkpoint_Controler>();
         transform.position = new Vector3(checkpoint_Controler.transform.position.x, checkpoint_Controler.transform.position.y, checkpoint_Controler.transform.position.z);
         body.rotation = checkpoint_Controler.transform.eulerAngles.z;
         
         transform.localScale = new Vector3(checkpoint_Controler.transform.localScale.x, checkpoint_Controler.transform.localScale.y, checkpoint_Controler.transform.localScale.z);
         
-        AIPlayer = new int[define.levelContestants];
+        
+        StartCoroutine(LateStart(0.25f));
     }
+
+    IEnumerator LateStart(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        AIPlayer = new int[define.count];
+    }
+
 
     void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "checkpoint")
+        if (checkpoint_Controler.CheckpointNumber > currentCheckpoint)
         {
 
             currentCheckpoint = checkpoint_Controler.CheckpointNumber;
-
+            Debug.Log("Triangles");
         }
         for (int i = 0; i < AIPlayer.Length; i++)
         {
-            if (collision.gameObject.tag == "AIPlayer" + i && gameObject.name == "Target_0" + i) //AI Player 1 Collision
+            if (collision.gameObject.tag == "AIPlayer" + i && gameObject.name == "Target_0" + i) //AI Player Collision
             {
                 if (GameObject.Find("Checkpoint_" + (currentCheckpoint + 1)) != null) //Checks if the next checkpoint exists. if not, reset the checkpoint counter and increment players laps 
                 {
                     checkpoint_Controler = GameObject.Find("Checkpoint_" + (currentCheckpoint + 1)).GetComponent<Checkpoint_Controler>();
+                    
                 }
                 else
                 {
+                   
                     currentCheckpoint = 0;
                     define.levelPlayerLaps[i] += 1;
                     checkpoint_Controler = GameObject.Find("Checkpoint_" + (currentCheckpoint + 1)).GetComponent<Checkpoint_Controler>();
@@ -70,7 +80,7 @@ public class AI_Controler : MonoBehaviour
 
                 transform.position = new Vector3(checkpoint_Controler.transform.position.x, checkpoint_Controler.transform.position.y, checkpoint_Controler.transform.position.z);
                 body.rotation = checkpoint_Controler.transform.eulerAngles.z;
-                transform.localScale = new Vector3(checkpoint_Controler.transform.localScale.x, checkpoint_Controler.transform.localScale.y, checkpoint_Controler.transform.localScale.z);
+                transform.localScale = new Vector3(checkpoint_Controler.transform.localScale.x, .74f, checkpoint_Controler.transform.localScale.z);
 
 
             }
@@ -89,7 +99,7 @@ public class AI_Controler : MonoBehaviour
 
                 transform.position = new Vector3(checkpoint_Controler.transform.position.x, checkpoint_Controler.transform.position.y, checkpoint_Controler.transform.position.z);
                 body.rotation = checkpoint_Controler.transform.eulerAngles.z;
-                transform.localScale = new Vector3(checkpoint_Controler.transform.localScale.x, checkpoint_Controler.transform.localScale.y, checkpoint_Controler.transform.localScale.z);
+                transform.localScale = new Vector3(checkpoint_Controler.transform.localScale.x, .74f, checkpoint_Controler.transform.localScale.z);
             }
 
         }
