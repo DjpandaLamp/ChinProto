@@ -89,6 +89,7 @@ public class LevelDefine : MonoBehaviour
                 aIPlayers[i] = Instantiate<GameObject>(AIPlayerPrefab, GameObject.Find("Players").transform);
                 aIPlayers[i].name = "AI Player_0" + i;
                 aIPlayers[i].tag = "AIPlayer" + i;
+                aIPlayers[i].layer = 9;
                 aIPlayers[i].transform.position = startLine[i].transform.position;
                 aIPlayers[i].transform.Rotate(0, 0, startLine[i].transform.eulerAngles.z);
                 
@@ -96,12 +97,14 @@ public class LevelDefine : MonoBehaviour
                 aIDest[i] = aIPlayers[i].GetComponent<AIDestinationSetter>();
                 aIDest[i].target = aITargets[i].transform;
                 
+                
             }
             else
             {
                 player = Instantiate<GameObject>(playerPrefab, GameObject.Find("Players").transform);
                 player.name = "Player";
                 player.tag = "Player";
+                player.layer = 9;
                 cameraMain = Instantiate<GameObject>(cameraPrefab);
                 cameraMain.AddComponent<CameraFollow>();
                 playerScript = player.GetComponent<Player_Character_controller>();
