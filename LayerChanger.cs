@@ -14,17 +14,18 @@ public class LayerChanger : MonoBehaviour
         gameObject.AddComponent<Rigidbody2D>();
         gameObject.AddComponent<BoxCollider2D>();
         rb = GetComponent<Rigidbody2D>();
+        rb.gravityScale = 0;
         box = GetComponent<BoxCollider2D>();
         box.isTrigger = true;
-        if (gameObject.name == "LowChanger")
+        if (gameObject.name == "LowChangers")
         {
             layerType = 0;
         }
-        if (gameObject.name == "MidChanger")
+        if (gameObject.name == "MidChangers")
         {
             layerType = 1;
         }
-        if (gameObject.name == "HighChanger")
+        if (gameObject.name == "HighChangers")
         {
             layerType = 2;
         }
@@ -44,7 +45,7 @@ public class LayerChanger : MonoBehaviour
             if (collision.gameObject.layer == 9 || collision.gameObject.layer == 10) //Low
             {
                 collision.gameObject.layer = 8;
-                collision.transform.position = new Vector3(collision.transform.position.x, collision.transform.position.y, 14);
+                collision.transform.position = new Vector3(collision.transform.position.x, collision.transform.position.y, 16);
             }
         }
         if (layerType == 1)
@@ -60,7 +61,7 @@ public class LayerChanger : MonoBehaviour
             if (collision.gameObject.layer == 8 || collision.gameObject.layer == 10) //High
             {
                 collision.gameObject.layer = 9;
-                collision.transform.position = new Vector3(collision.transform.position.x, collision.transform.position.y, 14);
+                collision.transform.position = new Vector3(collision.transform.position.x, collision.transform.position.y, 12);
             }
         }
     }
