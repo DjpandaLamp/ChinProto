@@ -6,7 +6,9 @@ public class LayerChanger : MonoBehaviour
 {
     private Rigidbody2D rb;
     private BoxCollider2D box;
+    private SpriteRenderer sp;
     public int layerType;
+    public bool isDebug;
 
     // Start is called before the first frame update
     void Start()
@@ -17,6 +19,7 @@ public class LayerChanger : MonoBehaviour
         rb.gravityScale = 0;
         box = GetComponent<BoxCollider2D>();
         box.isTrigger = true;
+        sp = GetComponent<SpriteRenderer>();
         if (gameObject.name == "LowChangers")
         {
             layerType = 0;
@@ -34,8 +37,23 @@ public class LayerChanger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKey(KeyCode.D) == true)
+        {
+            isDebug = true;
+        }
+        else
+        {
+            isDebug = false;
+        }
 
+        if (isDebug == true && sp != null)
+        {
+            sp.color = new Color(sp.color.r, sp.color.g, sp.color.b, 0.5f); 
+        }
+        else if (sp != null)
+        {
+            sp.color = new Color(sp.color.r, sp.color.g, sp.color.b, 0);
+        }
     }
 
     void OnTriggerStay2D(Collider2D collision)
