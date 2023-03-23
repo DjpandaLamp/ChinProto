@@ -30,12 +30,14 @@ public class LevelDefine : MonoBehaviour
     public GameObject playerPrefab;
     public GameObject cameraPrefab;
     public GameObject pauseShadePrefab;
+    public GameObject effectPrefab;
 
     public GameObject[] aIPlayers;
     public GameObject[] aITargets;
     private GameObject player;
     private GameObject cameraMain;
     private GameObject pauseMain;
+    private GameObject effectPPP;
     public StartLine[] startLine;
 
     private PauseShade pauseShade;
@@ -45,7 +47,7 @@ public class LevelDefine : MonoBehaviour
     private AIPath[] aIPath;
     private AIDestinationSetter[] aIDest;
     public AI_Controler[] aITargetScript;
-
+    
     public int count = 5;
 
     // Start is called before the first frame update
@@ -73,6 +75,7 @@ public class LevelDefine : MonoBehaviour
         aIPath = new AIPath[count];
         aIDest = new AIDestinationSetter[count];
         aITargets = new GameObject[count];
+        
 
         StartCoroutine(LateStart(0.1f));
     }
@@ -111,7 +114,8 @@ public class LevelDefine : MonoBehaviour
                 cameraScript = cameraMain.GetComponent<CameraFollow>();
                 player.transform.position = startLine[i].transform.position;
                 player.transform.Rotate(0, 0, startLine[i].transform.eulerAngles.z);
-                cameraScript.Target = player.transform; 
+                cameraScript.Target = player.transform;
+               
             }
         }
     }
