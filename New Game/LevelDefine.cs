@@ -25,6 +25,8 @@ public class LevelDefine : MonoBehaviour
     public int[] currentCheckpoint;
     public int[] indices;
 
+    
+
     public GameObject AIPlayerPrefab;
     public GameObject AITargetPrefab;
     public GameObject playerPrefab;
@@ -46,8 +48,11 @@ public class LevelDefine : MonoBehaviour
     private CameraFollow cameraScript;
     private AIPath[] aIPath;
     private AIDestinationSetter[] aIDest;
+    private Animator[] p_animators;
     public AI_Controler[] aITargetScript;
+
     
+
     public int count = 5;
 
     // Start is called before the first frame update
@@ -66,16 +71,14 @@ public class LevelDefine : MonoBehaviour
         distanceToNextCheckpoint = new float[count];
         currentPosition = new float[count];
 
-
-
-
+        
         aITargetScript = new AI_Controler[count];
         startLine = new StartLine[count];
         aIPlayers = new GameObject[count-1];
         aIPath = new AIPath[count];
         aIDest = new AIDestinationSetter[count];
         aITargets = new GameObject[count];
-        
+        p_animators = new Animator[count];
 
         StartCoroutine(LateStart(0.1f));
     }
@@ -90,16 +93,45 @@ public class LevelDefine : MonoBehaviour
             if (aIPlayers.Length > i)
             {
                 aIPlayers[i] = Instantiate<GameObject>(AIPlayerPrefab, GameObject.Find("Players").transform);
+                p_animators[i] = aIPlayers[i].GetComponent<Animator>();
+                p_animators[i].enabled = false;
                 aIPlayers[i].name = "AI Player_0" + i;
                 aIPlayers[i].tag = "AIPlayer" + i;
                 aIPlayers[i].layer = 10;
                 aIPlayers[i].transform.position = startLine[i].transform.position;
                 aIPlayers[i].transform.Rotate(0, 0, startLine[i].transform.eulerAngles.z);
-                
+
+                if (i == 0)
+                {
+                    p_animators[i].enabled = true;
+                    p_animators[i].SetTrigger("tanDrive");
+                    p_animators[i].enabled = false;
+                }
+                else if (i == 1)
+                {
+                    p_animators[i].enabled = true;
+                    p_animators[i].SetTrigger("purpleDrive");
+                    p_animators[i].enabled = false;
+                }
+                else if (i == 2)
+                {
+                    p_animators[i].enabled = true;
+                    p_animators[i].SetTrigger("cyanDrive");
+                    p_animators[i].enabled = false;
+                }
+                else if (i == 3)
+                {
+                    p_animators[i].enabled = true;
+                    p_animators[i].SetTrigger("blueDrive");
+                    p_animators[i].enabled = false;
+                }
+
+
                 aIPath[i] = aIPlayers[i].GetComponent<AIPath>();
                 aIDest[i] = aIPlayers[i].GetComponent<AIDestinationSetter>();
                 aIDest[i].target = aITargets[i].transform;
                 
+
                 
             }
             else
@@ -108,6 +140,15 @@ public class LevelDefine : MonoBehaviour
                 player.name = "Player";
                 player.tag = "Player";
                 player.layer = 10;
+                p_animators[i] = player.GetComponent<Animator>();
+                p_animators[i].ResetTrigger("tanDrive");
+                p_animators[i].ResetTrigger("purpleDrive");
+                p_animators[i].ResetTrigger("cyanDrive");
+                p_animators[i].ResetTrigger("blueDrive");
+                p_animators[i].SetTrigger("Player");
+                
+                
+
                 cameraMain = Instantiate<GameObject>(cameraPrefab);
                 cameraMain.AddComponent<CameraFollow>();
                 playerScript = player.GetComponent<Player_Character_controller>();
@@ -117,6 +158,12 @@ public class LevelDefine : MonoBehaviour
                 cameraScript.Target = player.transform;
                
             }
+
+        }
+        for (int i = 0; p_animators.Length - 1 > i; i++)
+        {
+            Debug.Log("Plo");
+            p_animators[i].enabled = true;
         }
     }
 

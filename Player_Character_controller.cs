@@ -49,7 +49,7 @@ public class Player_Character_controller : MonoBehaviour
     public AIDestinationSetter AIFinder;
     public Animator p_animator; //allows easy interaction with animator
     public SpriteRenderer p_spriteRenderer;
-   
+    PlayerMovement PlayerMovement;
 
     public Text StateText; //Text representation current state
     public Text moneyText; //Text representation of Amount of money 
@@ -81,6 +81,11 @@ public class Player_Character_controller : MonoBehaviour
     public int clearTimer;
     public int test;
     public int currentLayer;
+
+    void Awake()
+    {
+        PlayerMovement = GetComponent<PlayerMovement>();
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -131,11 +136,14 @@ public class Player_Character_controller : MonoBehaviour
         previousFrameState = state;
         if (canControl == true)
         {
+            Vector2 inputVector = Vector2.zero;
             //Get Horizontal Input
-            xDirection = (Input.GetAxisRaw("Horizontal"));
+            inputVector.x = (Input.GetAxis("Horizontal"));
             //Get Vertical Input
-            yDirection = (Input.GetAxis("Vertical"));
-            //Clear Inputs
+            inputVector.y = (Input.GetAxis("Vertical"));
+
+            PlayerMovement.SetInputVector(inputVector);
+
 
 
 
@@ -164,13 +172,13 @@ public class Player_Character_controller : MonoBehaviour
                 clearTimer = 5;
             }
 
-            MovementSet(1);
-            DashMult = Mathf.Lerp(DashMult, 0, 0.18f*Time.deltaTime);
+            PlayerMovement.MultSpeed = 1; ;
+            DashMult = Mathf.Lerp(DashMult, 0, 0.18f * Time.deltaTime);
             clearTimer -= 1;
 
         }
-    }
 
+    }
     void IdleState()
     {
         if (xDirection != 0f || yDirection != 0f)
@@ -199,9 +207,9 @@ public class Player_Character_controller : MonoBehaviour
         }
         else
         {
-            MovementSet(1);
-            //update position
-            transform.position = transform.position + velocity;
+            PlayerMovement.MultSpeed = 1;
+
+
 
         }
     }
@@ -213,8 +221,8 @@ public class Player_Character_controller : MonoBehaviour
         {
             DashMult = 2.5f;
         }
-        MovementSet(DashMult);
-        transform.position = transform.position + velocity;
+        
+        
         if (DashMult <= 1.4f)
         {
             p_animator.SetTrigger("playerWalk");
@@ -233,7 +241,7 @@ public class Player_Character_controller : MonoBehaviour
     {
 
     }
-
+/*
     void MovementSet(float moveMult)
     {
             //Credit: https://answers.unity.com/questions/686025/top-down-2d-car-physics-1.html -- kdorland
@@ -269,7 +277,7 @@ public class Player_Character_controller : MonoBehaviour
             rb.velocity = rb.velocity * 0.95f * Time.deltaTime;
         test -= 1;
     }
-
+*/
 
     void PlayerHurt()
     {
