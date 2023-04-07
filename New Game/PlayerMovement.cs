@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     float accelerationInput;
     float steerInput;
 
-    float rotateAngle;
+    float rotateAngle = 0;
 
     float velocityVsUp;
 
@@ -78,9 +78,10 @@ public class PlayerMovement : MonoBehaviour
 
     void ApplySteer()
     {
-        //float minSpeed = (rb.velocity.magnitude / 8);
-       // minSpeed = Mathf.Clamp01(minSpeed);
-        rotateAngle -= steerInput * turnSet;
+        float minSpeed = (rb.velocity.magnitude / 4);
+        minSpeed = Mathf.Clamp01(minSpeed);
+        rotateAngle -= steerInput * turnSet * minSpeed;
+        Debug.Log(rotateAngle);
         rb.MoveRotation(rotateAngle);
     }
 

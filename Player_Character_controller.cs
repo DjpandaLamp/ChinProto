@@ -139,6 +139,7 @@ public class Player_Character_controller : MonoBehaviour
             Vector2 inputVector = Vector2.zero;
             //Get Horizontal Input
             inputVector.x = (Input.GetAxis("Horizontal"));
+            
             //Get Vertical Input
             inputVector.y = (Input.GetAxis("Vertical"));
 
