@@ -10,6 +10,7 @@ public class NewAIControler : MonoBehaviour
     public aIMode AIMode;
 
     //Local Variables
+    [Header("DebugCheck")]
     public Vector3 targetPosition = Vector3.zero;
     public Transform targetTransform = null;
 
@@ -47,7 +48,7 @@ public class NewAIControler : MonoBehaviour
         }
 
         inputVector.x = TurnTowardTarget();
-        inputVector.y = 1f;
+        inputVector.y = SpeedControl(inputVector.x);
         PlayerMovement.SetInputVector(inputVector);
     }
 
@@ -75,7 +76,8 @@ public class NewAIControler : MonoBehaviour
         {
             targetPosition = currentWaypoint.transform.position;
             //Check Distance to target
-            float DistanceToWaypoint = (targetPosition - transform.position).magnitude;
+            Vector2 baseVector = new Vector2(targetPosition.x - transform.position.x, targetPosition.y - transform.position.y);
+            float DistanceToWaypoint = baseVector.magnitude;
             //Check if close enough to reach waypoint
             if (DistanceToWaypoint <= currentWaypoint.minDistanceToNextNode)
             {
@@ -105,4 +107,11 @@ public class NewAIControler : MonoBehaviour
 
         return steerAmount;
     }
+    float SpeedControl(float SteerInput)
+    {
+        return 1.05f - Mathf.Abs(SteerInput) / 0.75f;
+    }
 }
+
+
+

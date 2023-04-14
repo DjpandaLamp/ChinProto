@@ -18,10 +18,13 @@ public class PlayerMovement : MonoBehaviour
     float velocityVsUp;
 
     Rigidbody2D rb;
+    LevelDefine LevelDefine;
 
     void Awake()
     {
+        //LevelDefine = GameObject.FindGameObjectWithTag("LevelDefine").GetComponent<LevelDefine>();
         rb = GetComponent<Rigidbody2D>();
+       // rb.MoveRotation(LevelDefine.startLine[0].transform.eulerAngles.z);
     }
     // Start is called before the first frame update
     void Start()

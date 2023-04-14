@@ -17,5 +17,9 @@ public class Checkpoint_Controler : MonoBehaviour
     private void FixedUpdate()
     {
         sprite.color = new Color(color.r, color.g, color.b, opacity);
+        if (gameObject.name == "Checkpoint_0")
+        {
+            sprite.color = new Color(color.r, color.g, color.b, 1f);
+        }
     }
 }

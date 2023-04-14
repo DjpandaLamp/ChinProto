@@ -15,6 +15,7 @@ public WaypointNode[] nextNode;
         for (int i=0; i <nextNode.Length; i++)
         {
             Gizmos.DrawLine(transform.position, nextNode[i].transform.position);
+            Gizmos.DrawWireSphere(transform.position, minDistanceToNextNode);
         }
        
     }
