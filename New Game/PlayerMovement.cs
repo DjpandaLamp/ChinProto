@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     float accelerationInput;
     float steerInput;
 
-    float rotateAngle = 0;
+    public float rotateAngle = 0;
 
     float velocityVsUp;
 
@@ -22,9 +22,9 @@ public class PlayerMovement : MonoBehaviour
 
     void Awake()
     {
-        //LevelDefine = GameObject.FindGameObjectWithTag("LevelDefine").GetComponent<LevelDefine>();
+        LevelDefine = GameObject.FindGameObjectWithTag("LevelDefine").GetComponent<LevelDefine>();
         rb = GetComponent<Rigidbody2D>();
-       // rb.MoveRotation(LevelDefine.startLine[0].transform.eulerAngles.z);
+        
     }
     // Start is called before the first frame update
     void Start()
@@ -81,11 +81,13 @@ public class PlayerMovement : MonoBehaviour
 
     void ApplySteer()
     {
-        float minSpeed = (rb.velocity.magnitude / 4);
-        minSpeed = Mathf.Clamp01(minSpeed);
-        rotateAngle -= steerInput * turnSet * minSpeed;
-        Debug.Log(rotateAngle);
-        rb.MoveRotation(rotateAngle);
+      
+            float minSpeed = (rb.velocity.magnitude / 4);
+            minSpeed = Mathf.Clamp01(minSpeed);
+            rotateAngle -= steerInput * turnSet * minSpeed;
+            Debug.Log(rotateAngle);
+            rb.MoveRotation(rotateAngle);
+
     }
 
     void SetSideVelocity()

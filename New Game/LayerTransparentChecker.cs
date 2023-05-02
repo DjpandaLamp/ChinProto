@@ -6,13 +6,16 @@ using UnityEngine.Tilemaps;
 
 public class LayerTransparentChecker : MonoBehaviour
 {
-    public bool isTransparent;
-    public bool isInvis;
+
     public float desiredValue;
     public float currentValue;
     public Tilemap tilemap;
     [SerializeField]
     private Player_Character_controller player;
+
+
+
+    
 
     // Start is called before the first frame update
     void Start()
@@ -24,26 +27,21 @@ public class LayerTransparentChecker : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
         tilemap = GetComponent<Tilemap>();
-        player = GameObject.Find("Player").GetComponent<Player_Character_controller>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player_Character_controller>();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (player.gameObject.layer == 8 && isTransparent == true)
-        {
-            desiredValue = .50f;
-        }
-        else if (isInvis == true)
-        {
-            desiredValue = 0;
-        }
-        else
-        {
-            desiredValue = 1f;
-        }
-
+       
         SmoothChange(desiredValue);
+       
+    }
+
+    private void FixedUpdate()
+    {
+        
     }
 
 

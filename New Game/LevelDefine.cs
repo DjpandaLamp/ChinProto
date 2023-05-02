@@ -49,6 +49,7 @@ public class LevelDefine : MonoBehaviour
     private AIPath[] aIPath;
     private AIDestinationSetter[] aIDest;
     private Animator[] p_animators;
+    private PlayerMovement[] PlayersMovement;
     public AI_Controler[] aITargetScript;
 
     
@@ -70,12 +71,13 @@ public class LevelDefine : MonoBehaviour
         levelPlayerTime = new float[count];
         distanceToNextCheckpoint = new float[count];
         currentPosition = new float[count];
-
+        
         
         aITargetScript = new AI_Controler[count];
         startLine = new StartLine[count];
         aIPlayers = new GameObject[count-1];
         aIPath = new AIPath[count];
+        PlayersMovement = new PlayerMovement[count];
         aIDest = new AIDestinationSetter[count];
         aITargets = new GameObject[count];
         p_animators = new Animator[count];
@@ -95,11 +97,12 @@ public class LevelDefine : MonoBehaviour
                 aIPlayers[i] = Instantiate<GameObject>(AIPlayerPrefab, GameObject.Find("Players").transform);
                 p_animators[i] = aIPlayers[i].GetComponent<Animator>();
                 p_animators[i].enabled = false;
+                PlayersMovement[i] = aIPlayers[i].GetComponent<PlayerMovement>();
                 aIPlayers[i].name = "AI Player_0" + i;
                 aIPlayers[i].tag = "AIPlayer" + i;
                 aIPlayers[i].layer = 10;
                 aIPlayers[i].transform.position = startLine[i].transform.position;
-                aIPlayers[i].transform.Rotate(0, 0, startLine[i].transform.eulerAngles.z);
+                PlayersMovement[i].rotateAngle = startLine[i].transform.eulerAngles.z;
 
                 if (i == 0)
                 {
@@ -124,15 +127,7 @@ public class LevelDefine : MonoBehaviour
                     p_animators[i].enabled = true;
                     p_animators[i].SetTrigger("blueDrive");
                     p_animators[i].enabled = false;
-                }
-
-
-                aIPath[i] = aIPlayers[i].GetComponent<AIPath>();
-                aIDest[i] = aIPlayers[i].GetComponent<AIDestinationSetter>();
-                aIDest[i].target = aITargets[i].transform;
-                
-
-                
+                }  
             }
             else
             {
@@ -154,7 +149,10 @@ public class LevelDefine : MonoBehaviour
                 playerScript = player.GetComponent<Player_Character_controller>();
                 cameraScript = cameraMain.GetComponent<CameraFollow>();
                 player.transform.position = startLine[i].transform.position;
-                player.transform.Rotate(0, 0, startLine[i].transform.eulerAngles.z);
+                PlayersMovement[i] = player.GetComponent<PlayerMovement>();
+
+                PlayersMovement[i].rotateAngle = startLine[i].transform.eulerAngles.z;
+
                 cameraScript.Target = player.transform;
                
             }
