@@ -2,13 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.UIElements;
+
 public class NewAIControler : MonoBehaviour
 {
     public enum aIMode { Chase, Node }
 
+    [SerializeField]
+    private LayerMask _layerMask;
+
     [Header("AI Setting")]
     public aIMode AIMode;
-
+    public bool IsAvoidingCars = true;
     //Local Variables
     [Header("DebugCheck")]
     public Vector3 targetPosition = Vector3.zero;
@@ -19,11 +24,14 @@ public class NewAIControler : MonoBehaviour
     WaypointNode[] allWaypoints;
     //Components 
     private PlayerMovement PlayerMovement;
+    PolygonCollider2D poly;
 
     void Awake()
     {
         PlayerMovement = GetComponent<PlayerMovement>();
         allWaypoints = FindObjectsOfType<WaypointNode>();
+        poly = GetComponent<PolygonCollider2D>();
+        
     }
     // Start is called before the first frame update
     void Start()
@@ -46,11 +54,13 @@ public class NewAIControler : MonoBehaviour
                 break;
 
         }
-
+        
         inputVector.x = TurnTowardTarget();
         inputVector.y = SpeedControl(inputVector.x);
         PlayerMovement.SetInputVector(inputVector);
     }
+
+
 
 
     void Chase()
@@ -86,6 +96,51 @@ public class NewAIControler : MonoBehaviour
         }
 
     }
+    
+    bool CheckInFrontCar(out Vector3 position, out Vector3 otherCarRightVector)
+    {
+
+
+        poly.enabled = false;
+        //Check for other cars using a circle raycast
+
+        RaycastHit2D raycastHit2D = Physics2D.CircleCast(transform.position + transform.up * 3f, 2, transform.up, 6, _layerMask);
+        
+
+        poly.enabled = true; 
+
+        
+        if (raycastHit2D.collider != null)
+        {
+            Debug.DrawRay(transform.position + transform.up + transform.right, transform.up * 6, Color.red);
+            Debug.DrawRay(transform.position + transform.up - transform.right, transform.up * 6, Color.red);
+
+            position = raycastHit2D.collider.transform.position;
+
+            otherCarRightVector = raycastHit2D.collider.transform.right;
+
+            return true;
+        }
+        else
+        {
+            //Black Line for not hitting
+            Debug.DrawRay(transform.position + transform.up + transform.right, transform.up * 6, Color.blue);
+            Debug.DrawRay(transform.position + transform.up - transform.right, transform.up * 6, Color.blue);
+        }
+        
+        //Nothing Hit Raycast
+        position = Vector3.zero;
+        otherCarRightVector = Vector3.zero;
+         
+        return false;
+    }
+
+    void AvoidCars()
+    {
+        CheckInFrontCar(out Vector3 positionn, out Vector3 otherCarRightVector);
+
+    }
+
 
     WaypointNode FindNearestWaypoint()
     {
@@ -98,8 +153,15 @@ public class NewAIControler : MonoBehaviour
         //get vector
         Vector3 vectorToTarget = targetPosition - transform.position;
         vectorToTarget.Normalize();
-        //calculate angle
-        float angleToTarget = Vector2.SignedAngle(transform.up, vectorToTarget);
+
+        if (IsAvoidingCars)
+        {
+            AvoidCars();
+        }
+        
+
+            //calculate angle
+            float angleToTarget = Vector2.SignedAngle(transform.up, vectorToTarget);
         angleToTarget *= -1;
         //Clamp angle and smooth
         float steerAmount = angleToTarget / 45f;

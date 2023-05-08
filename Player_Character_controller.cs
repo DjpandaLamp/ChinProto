@@ -63,7 +63,7 @@ public class Player_Character_controller : MonoBehaviour
     public int currentCheckpointSelf; //Current Checkpoint Number for the player
     public int lapNumber = 1; //Current lap
 
-    public AI_Controler currentTarget;
+
     public float playerSpeed = 1;
     public float invTime;
     public bool isInvincible;
@@ -100,7 +100,7 @@ public class Player_Character_controller : MonoBehaviour
 
         state = States.idle;
 //        masterBar = GameObject.Find("HelathBar").GetComponent<MasterBarScript>();
-        currentTarget = GameObject.Find("Target_04").GetComponent<AI_Controler>();
+        
         this.p_animator = GetComponent<Animator>();
         
         this.rb = GetComponent<Rigidbody2D>();

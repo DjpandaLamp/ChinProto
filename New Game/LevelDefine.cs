@@ -89,9 +89,9 @@ public class LevelDefine : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
         for (int i=0;i<count;i++)
         {
-            aITargets[i] = Instantiate<GameObject>(AITargetPrefab, GameObject.Find("Targets").transform);
-            aITargets[i].name = "Target_0" + i;
-            aITargetScript[i] = aITargets[i].GetComponent<AI_Controler>();
+            //aITargets[i] = Instantiate<GameObject>(AITargetPrefab, GameObject.Find("Targets").transform);
+          //  aITargets[i].name = "Target_0" + i;
+          //  aITargetScript[i] = aITargets[i].GetComponent<AI_Controler>();
             if (aIPlayers.Length > i)
             {
                 aIPlayers[i] = Instantiate<GameObject>(AIPlayerPrefab, GameObject.Find("Players").transform);
@@ -99,7 +99,7 @@ public class LevelDefine : MonoBehaviour
                 p_animators[i].enabled = false;
                 PlayersMovement[i] = aIPlayers[i].GetComponent<PlayerMovement>();
                 aIPlayers[i].name = "AI Player_0" + i;
-                aIPlayers[i].tag = "AIPlayer" + i;
+                aIPlayers[i].tag = "AI";
                 aIPlayers[i].layer = 10;
                 aIPlayers[i].transform.position = startLine[i].transform.position;
                 PlayersMovement[i].rotateAngle = startLine[i].transform.eulerAngles.z;
