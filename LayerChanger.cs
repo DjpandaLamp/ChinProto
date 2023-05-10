@@ -9,7 +9,7 @@ public class LayerChanger : MonoBehaviour
     private SpriteRenderer sp;
     public int layerType;
     public bool isDebug;
-
+    private NewAIControler newAI;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +33,8 @@ public class LayerChanger : MonoBehaviour
             layerType = 2;
         }
     }
+
+    
 
     // Update is called once per frame
     void Update()
@@ -58,10 +60,17 @@ public class LayerChanger : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D collision)
     {
+        
         if (layerType == 0)
         {
             if (collision.gameObject.layer == 9 || collision.gameObject.layer == 10) //Low
             {
+                newAI = collision.GetComponent<NewAIControler>();
+                if (newAI!=null)
+                {
+                    newAI._layerMask = 1 << 8;
+                }
+                
                 collision.gameObject.layer = 8;
                 collision.transform.position = new Vector3(collision.transform.position.x, collision.transform.position.y, 16);
             }
@@ -70,6 +79,11 @@ public class LayerChanger : MonoBehaviour
         {
             if (collision.gameObject.layer == 8 || collision.gameObject.layer == 9) //Mid
             {
+                newAI = collision.GetComponent<NewAIControler>();
+                if (newAI != null)
+                {
+                    newAI._layerMask = 1 << 10;
+                }
                 collision.gameObject.layer = 10;
                 collision.transform.position = new Vector3(collision.transform.position.x, collision.transform.position.y, 14);
             }
@@ -78,6 +92,11 @@ public class LayerChanger : MonoBehaviour
         {
             if (collision.gameObject.layer == 8 || collision.gameObject.layer == 10) //High
             {
+                newAI = collision.GetComponent<NewAIControler>();
+                if (newAI != null)
+                {
+                    newAI._layerMask = 1 << 9;
+                }
                 collision.gameObject.layer = 9;
                 collision.transform.position = new Vector3(collision.transform.position.x, collision.transform.position.y, 12);
             }
