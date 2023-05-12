@@ -18,6 +18,7 @@ public class MainManager : MonoBehaviour
     public int[] levelLapsCount;
     public int[] levelContestants;
     public int[] levelCheckpointRollover;
+    
     public float[] levelRewards;
     
 

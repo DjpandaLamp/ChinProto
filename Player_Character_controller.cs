@@ -20,7 +20,7 @@ public class Player_Character_controller : MonoBehaviour
         useItem
     }
 
-    enum Items
+    enum Items //tbc
     {
         NitroFuel,
         RoadSpike,
@@ -41,7 +41,7 @@ public class Player_Character_controller : MonoBehaviour
     [SerializeField]
     States previousFrameState; //Helps with Transitions between states
     public LevelDefine LevelDefineCharacteristics; //Allows for interaction with the level data
-    private Checkpoint_Controler checkpoint_Controler; //Allows for interaction with checkpoint data
+    
     private AI_Controler target;
     private CameraFollow cameraFollow;
     private MasterBarScript masterBar;
@@ -62,6 +62,8 @@ public class Player_Character_controller : MonoBehaviour
     public string heldItem; //Currently Held Item
     public int currentCheckpointSelf; //Current Checkpoint Number for the player
     public int lapNumber = 1; //Current lap
+    public int maxLapNumber = 4; //Maximum Number of laps
+    public int displayLap;
 
 
     public float playerSpeed = 1;
@@ -242,43 +244,7 @@ public class Player_Character_controller : MonoBehaviour
     {
 
     }
-/*
-    void MovementSet(float moveMult)
-    {
-            //Credit: https://answers.unity.com/questions/686025/top-down-2d-car-physics-1.html -- kdorland
-            //Calc speed from input
-            velocity = transform.up * (yDirection * acceleration * moveMult * playerSpeed);
-            rb.AddForce(velocity);
-//            masterBar.setSlider(yDirection*DashShow);
 
-        //rotate player
-        float direction = Vector3.Dot(rb.velocity, rb.GetRelativeVector(Vector3.up));
-            if (direction >= 0.0f)
-            {
-                rb.rotation -= xDirection * steerMag * playerSpeed;
-            }
-            else
-            {
-                rb.rotation += xDirection * steerMag * playerSpeed;
-            }
-
-
-            //Change Velocity based on rotation
-            float driftforce = Vector3.Dot(rb.velocity, rb.GetRelativeVector(Vector3.left)) * 2.0f;
-            Vector3 relativeforce = Vector3.right * driftforce;
-            Debug.DrawLine(rb.position, rb.GetRelativePoint(relativeforce), Color.red);
-            rb.AddForce(rb.GetRelativeVector(relativeforce));
-
-            //Max Speed
-            if (rb.velocity.magnitude > maxSpeed)
-            {
-                rb.velocity = rb.velocity.normalized * maxSpeed;
-            }
-            currentSpeed = rb.velocity.magnitude;
-            rb.velocity = rb.velocity * 0.95f * Time.deltaTime;
-        test -= 1;
-    }
-*/
 
     void PlayerHurt()
     {

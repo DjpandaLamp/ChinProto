@@ -92,14 +92,37 @@ public class NewAIControler : MonoBehaviour
         }
         if (currentWaypoint !=null)
         {
+            
+            //Set Ai Target
             targetPosition = currentWaypoint.transform.position;
+            
+            
             //Check Distance to target
             Vector2 baseVector = new Vector2(targetPosition.x - transform.position.x, targetPosition.y - transform.position.y);
             float DistanceToWaypoint = baseVector.magnitude;
+
+
+
+            if (DistanceToWaypoint>5)
+            {
+                Vector3 nearestPointOnWaypointLine = FindNearestPointOnLine(previousWaypoint.transform.position, currentWaypoint.transform.position, transform.position);
+
+                float segments = DistanceToWaypoint / 20;
+
+
+
+                targetPosition = (targetPosition + nearestPointOnWaypointLine * segments) / (segments + 1);
+
+                Debug.DrawLine(transform.position, targetPosition, Color.magenta);
+            }
+
             //Check if close enough to reach waypoint
             if (DistanceToWaypoint <= currentWaypoint.minDistanceToNextNode)
             {
+                //Set previous waypoint to current one
                 previousWaypoint = currentWaypoint;
+
+                //change current waypoint to next selected one
                 currentWaypoint = currentWaypoint.nextNode[Random.Range(0, currentWaypoint.nextNode.Length)];
             }
         }
@@ -150,8 +173,18 @@ public class NewAIControler : MonoBehaviour
         Vector2 lineHeadingVector = lineEndPos - lineStartPos;
 
         //Store Max distance
-        float maxDistane = lineHeadingVector.magnitude;
+        float maxDistance = lineHeadingVector.magnitude;
         lineHeadingVector.Normalize();
+
+
+        //Do projection between start and the point
+        Vector2 lineVectorStartToPoint = point - lineStartPos;
+        float dotProduct = Vector2.Dot(lineVectorStartToPoint, lineHeadingVector);
+
+        //Clamp to max distance
+        dotProduct = Mathf.Clamp(dotProduct, 0, maxDistance);
+
+        return lineStartPos + lineHeadingVector * dotProduct;
     }
 
 
