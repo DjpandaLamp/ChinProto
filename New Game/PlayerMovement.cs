@@ -5,13 +5,13 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Settings")]
-    public float accelerationSet = 2f;
+    public float accelerationSet = 2f; //Acceleration Multiplier
     public float turnSet = 3.5f;
     public float driftSet = 0.95f;
     public float maxSpeed = 3f;
     public float MultSpeed = 1.0f;
-    float accelerationInput;
-    float steerInput;
+    public float accelerationInput;
+    public float steerInput;
 
     public float rotateAngle = 0;
 
@@ -25,17 +25,6 @@ public class PlayerMovement : MonoBehaviour
         LevelDefine = GameObject.FindGameObjectWithTag("LevelDefine").GetComponent<LevelDefine>();
         rb = GetComponent<Rigidbody2D>();
         
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     void FixedUpdate()

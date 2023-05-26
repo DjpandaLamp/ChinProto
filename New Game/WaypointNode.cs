@@ -12,10 +12,14 @@ public class WaypointNode : MonoBehaviour
     public bool isStartingCheckpoint = false;
     public int checkpointValue;
     public int maxCheckpointValue;
+    public bool doAvoidCar = true;
+
 
     private BoxCollider2D BoxCollider2D;
     private Player_Character_controller player_Character_Controller;
     private PolygonCollider2D playerPolygon;
+
+    private NewAIControler aIControler;
  
     
 
@@ -56,6 +60,11 @@ IEnumerator LateStart(float waitTime)
             {
                 SceneManager.LoadSceneAsync("rMenu");
             }
+        }
+        if (collision.gameObject.tag == "AI")
+        {
+            aIControler = collision.GetComponent<NewAIControler>();
+            aIControler.IsAvoidingCars = doAvoidCar;
         }
     }
 
