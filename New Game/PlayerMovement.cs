@@ -40,15 +40,15 @@ public class PlayerMovement : MonoBehaviour
     {
         velocityVsUp = Vector2.Dot(transform.up, rb.velocity);
 
-        if (velocityVsUp > maxSpeed && accelerationInput > 0)
+        if (velocityVsUp > maxSpeed * MultSpeed && accelerationInput > 0)
         {
             return;
         }
-        if (velocityVsUp < -maxSpeed * 0.5f && accelerationInput < 0)
+        if (velocityVsUp < -maxSpeed * 0.5f * MultSpeed && accelerationInput < 0)
         {
             return;
         }
-        if (rb.velocity.sqrMagnitude > maxSpeed * maxSpeed && accelerationInput > 0)
+        if (rb.velocity.sqrMagnitude > (maxSpeed * maxSpeed) * MultSpeed && accelerationInput > 0)
         {
             return;
         }

@@ -5,7 +5,8 @@ using static NewAIControler;
 
 public class PowerUpManager : MonoBehaviour
 {
-
+    private PlayerMovement playerMovement;
+    private SpriteRenderer p_sprite;
     public enum mode
     {
         Player,
@@ -34,8 +35,15 @@ public class PowerUpManager : MonoBehaviour
     public int chosenPowerUp;
 
 
+    private void Awake()
+    {
+        playerMovement = GetComponent<PlayerMovement>();
+        p_sprite = GetComponent<SpriteRenderer>();
+    }
+
+
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         switch (Mode)
         {
@@ -79,19 +87,26 @@ public class PowerUpManager : MonoBehaviour
         {
             case 0:
                 {
-                    Debug.Log("YeeKai");
+                    playerMovement.MultSpeed = Mathf.Lerp(playerMovement.MultSpeed, 1.0f, 0.05f);
+
                     break;
                 }
 
             case 1:
                 {
-                    Debug.Log("Kaiyee");
+                    playerMovement.MultSpeed = 2.0f;
                     break;
                 }
         }
 
-
-
+        if (playerMovement.MultSpeed >= 1.45f)
+        {
+            p_sprite.color = new Color(0f, 0f, 1, 1);
+        }
+        else
+        {
+            p_sprite.color = new Color(1, 1, 1, 1);
+        }
     }
     void Player()
     {
