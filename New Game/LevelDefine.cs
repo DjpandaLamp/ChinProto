@@ -81,6 +81,8 @@ public class LevelDefine : MonoBehaviour
         aIDest = new AIDestinationSetter[count];
         aITargets = new GameObject[count];
         p_animators = new Animator[count];
+        
+
 
         StartCoroutine(LateStart(0.1f));
     }
@@ -215,47 +217,7 @@ public class LevelDefine : MonoBehaviour
     }
     void userPosition()
     {
-        for (int i = 0; i < levelContestants; i++) //For each player in a level, do 1 loop
-        {
-            Vector3 playerPosition;
-            Vector3 nextCheckpointPosition;
-            int checkpoint = currentCheckpoint[i];
-            if (i != levelContestants - 1)
-            {
-                Debug.Log("WEEE WOOOO...");
-                nextCheckpointPosition = new Vector3(aITargets[i].transform.position.x, aITargets[i].transform.position.y, aITargets[i].transform.position.z);
-                playerPosition = new Vector3(aITargets[i].transform.position.x, aITargets[i].transform.position.y, aITargets[i].transform.position.z);
-
-            }
-            else
-            {
-                Debug.Log("Boowamp...");
-                playerPosition = new Vector3(playerScript.transform.position.x, playerScript.transform.position.y, playerScript.transform.position.z);
-                if (playerScript.currentCheckpointSelf + 1 > checkControl.Length)
-                {
-                    nextCheckpointPosition = new Vector3(checkControl[0].transform.position.x, aITargets[0].transform.position.y, aITargets[0].transform.position.z);
-                }
-                else
-                {
-                    nextCheckpointPosition = new Vector3(checkControl[playerScript.currentCheckpointSelf + 1].transform.position.x, checkControl[playerScript.currentCheckpointSelf + 1].transform.position.y, checkControl[playerScript.currentCheckpointSelf + 1].transform.position.z);
-                }
-
-
-
-            }
-
-            float AbsDistance = Vector3.Distance(nextCheckpointPosition, playerPosition);
-
-            AbsDistance = AbsDistance - (1000 * checkpoint) - (100000 * (levelPlayerLaps[i] - 1)) + levelLapsCount * 100000 + levelCheckpointRollover * 1000;
-            currentPosition[i] = AbsDistance;
-
-        }
-        for (int i = 0; i < currentPosition.Length; i++)
-        {
-            indices[i] = i;
-        }
-
-        Array.Sort(currentPosition, indices);
+       
     }
     void SetText()
     {

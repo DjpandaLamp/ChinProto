@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
 
     public float rotateAngle = 0;
 
-    float velocityVsUp;
+    public float velocityVsUp;
 
     Rigidbody2D rb;
     LevelDefine LevelDefine;

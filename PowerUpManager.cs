@@ -19,8 +19,8 @@ public class PowerUpManager : MonoBehaviour
 
 
     [Header("AI Power Chance Ranges")]
-    public float nothingPowerChance = 8;
-    public float speedPowerChance = 5;
+    public float nothingPowerChance = 49;
+    public float speedPowerChance = 2;
 
     public float totalChance;
     //Displayed Percent Chance
@@ -94,14 +94,14 @@ public class PowerUpManager : MonoBehaviour
 
             case 1:
                 {
-                    playerMovement.MultSpeed = 2.0f;
+                    playerMovement.MultSpeed = 5f;
                     break;
                 }
         }
 
         if (playerMovement.MultSpeed >= 1.45f)
         {
-            p_sprite.color = new Color(0f, 0f, 1, 1);
+            p_sprite.color = new Color(0f, 1f, 1, 1);
         }
         else
         {

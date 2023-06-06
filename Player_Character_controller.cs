@@ -72,7 +72,10 @@ public class Player_Character_controller : MonoBehaviour
     public bool canControl = true;
     public float DashMult = 1;
     public float DashShow = 1;
+    public bool dashTrigger=true;
 
+    public bool isXMovement;
+    public bool isYMovement;
 
     private float currentSpeed;
 
@@ -147,7 +150,15 @@ public class Player_Character_controller : MonoBehaviour
 
             PlayerMovement.SetInputVector(inputVector);
 
-
+            if (inputVector.y != 0 )
+            {
+                isYMovement = true;
+            }
+            else
+            {
+                isYMovement = false;
+            }
+           
 
 
             if (state == States.idle)
@@ -167,24 +178,18 @@ public class Player_Character_controller : MonoBehaviour
                 ItemState();
             }
 
-            if (clearTimer <= 0)
-            {
-                dash = false;
 
+           
 
-                clearTimer = 5;
-            }
-
-            PlayerMovement.MultSpeed = 1; ;
-            DashMult = Mathf.Lerp(DashMult, 0, 0.18f * Time.deltaTime);
-            clearTimer -= 1;
+            
+         
 
         }
 
     }
     void IdleState()
     {
-        if (xDirection != 0f || yDirection != 0f)
+        if (isYMovement)
         {
             state = States.walking;
         }
@@ -196,11 +201,11 @@ public class Player_Character_controller : MonoBehaviour
 
     void WalkingState()
     {
-        if (xDirection == 0f && yDirection == 0f)
+        if (!isYMovement)
         {
             state = States.idle;
         }
-        else if (dash && DashMult <= 0.8)
+        else if (dash && PlayerMovement.MultSpeed <= 1.2f)
         {
             dash = false;
             state = States.dash;
@@ -219,22 +224,22 @@ public class Player_Character_controller : MonoBehaviour
 
     void DashState()
     {
-        DashShow = DashMult;
-        if (DashMult <= 0.8)
+        if (dashTrigger)
         {
-            DashMult = 2.5f;
+            
+            PlayerMovement.MultSpeed = 4f;
+            dashTrigger = false;
         }
-        
-        
-        if (DashMult <= 1.4f)
-        {
-            p_animator.SetTrigger("playerWalk");
-            p_animator.ResetTrigger("playerDash");
-        }
-        
-        if (DashMult <= 1)
+        PlayerMovement.MultSpeed = Mathf.Lerp(PlayerMovement.MultSpeed, 1, 0.15f * Time.deltaTime);
+
+
+
+    
+        if (PlayerMovement.MultSpeed <= 1.2f)
         {
             state = States.walking;
+            p_animator.SetTrigger("playerWalk");
+            p_animator.ResetTrigger("playerDash");
             return;
         } 
         
