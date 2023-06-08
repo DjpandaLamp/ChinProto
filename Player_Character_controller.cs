@@ -227,16 +227,17 @@ public class Player_Character_controller : MonoBehaviour
         if (dashTrigger)
         {
             
-            PlayerMovement.MultSpeed = 4f;
+            PlayerMovement.MultSpeed = 2.5f;
             dashTrigger = false;
         }
-        PlayerMovement.MultSpeed = Mathf.Lerp(PlayerMovement.MultSpeed, 1, 0.15f * Time.deltaTime);
+        PlayerMovement.MultSpeed = Mathf.Lerp(PlayerMovement.MultSpeed, 1, 1f * Time.deltaTime);
 
 
 
     
         if (PlayerMovement.MultSpeed <= 1.2f)
         {
+            dashTrigger = true;
             state = States.walking;
             p_animator.SetTrigger("playerWalk");
             p_animator.ResetTrigger("playerDash");

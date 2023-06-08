@@ -63,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
             rb.drag = 0;
         }
 
-        Vector3 accelVector = transform.up * accelerationInput * accelerationSet;
+        Vector3 accelVector = transform.up * accelerationInput * accelerationSet * MultSpeed;
 
         rb.AddForce(accelVector, ForceMode2D.Force);
     }
